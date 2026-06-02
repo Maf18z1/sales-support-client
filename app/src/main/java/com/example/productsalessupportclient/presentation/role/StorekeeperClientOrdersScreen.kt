@@ -71,6 +71,7 @@ import com.example.productsalessupportclient.data.network.StorekeeperDashboardAp
 import com.example.productsalessupportclient.data.repository.AuthSession
 import com.example.productsalessupportclient.data.repository.StorekeeperDashboardRepository
 import kotlinx.coroutines.launch
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 private const val STOREKEEPER_ORDER_TITLE_WEIGHT = 2.2f
 private const val STOREKEEPER_ORDER_DATE_WEIGHT = 1.3f
@@ -102,6 +103,10 @@ fun StorekeeperClientOrdersScreen(
 
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
+    val currentRoute =
+        navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val isListScreen = currentRoute == "list"
 
     var isLoading by rememberSaveable { mutableStateOf(false) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
@@ -203,13 +208,40 @@ fun StorekeeperClientOrdersScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(8.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            OutlinedButton(onClick = { showFilters = !showFilters }) {
-                Text(if (showFilters) "Скрыть фильтры" else "Показать фильтры")
+        if (isListScreen) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                OutlinedButton(
+                    onClick = { showFilters = !showFilters }
+                ) {
+                    Text(
+                        if (showFilters)
+                            "Скрыть фильтры"
+                        else
+                            "Показать фильтры"
+                    )
+                }
             }
+
+            if (showFilters) {
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(22.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFF8F5FF)
+                    )
+                ) {
+                    // весь существующий код фильтров
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
         if (showFilters) {

@@ -163,7 +163,7 @@ fun ClientManagerMainScreen(
 
             ClientManagerDashboardSection(
                 modifier = Modifier.weight(1f),
-                title = "Заказы клиентов",
+                title = "Заказы клиентов, ожидающие поддтверждения",
                 titleFontSize = 10.sp,
                 headers = listOf(
                     "Номер",

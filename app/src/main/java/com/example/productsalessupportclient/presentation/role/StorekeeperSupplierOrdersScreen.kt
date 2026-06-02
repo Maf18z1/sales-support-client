@@ -71,6 +71,7 @@ import com.example.productsalessupportclient.data.repository.AuthSession
 import com.example.productsalessupportclient.data.repository.StorekeeperDashboardRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 private enum class SupplierOrderStatusFilter(
     val value: String?,
@@ -195,6 +196,11 @@ fun StorekeeperSupplierOrdersScreen(
     val state = vm.uiState
     val navController = rememberNavController()
 
+    val currentRoute =
+        navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val isListScreen = currentRoute == "list"
+
     var showFilters by rememberSaveable { mutableStateOf(false) }
     var statusInput by rememberSaveable {
         mutableStateOf(SupplierOrderStatusFilter.ALL)
@@ -212,16 +218,25 @@ fun StorekeeperSupplierOrdersScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(12.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            OutlinedButton(onClick = { showFilters = !showFilters }) {
-                Text(if (showFilters) "Скрыть фильтры" else "Показать фильтры")
+        if (isListScreen) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                OutlinedButton(
+                    onClick = { showFilters = !showFilters }
+                ) {
+                    Text(
+                        if (showFilters)
+                            "Скрыть фильтры"
+                        else
+                            "Показать фильтры"
+                    )
+                }
             }
         }
 
-        if (showFilters) {
+        if (isListScreen && showFilters) {
             Spacer(modifier = Modifier.height(10.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
