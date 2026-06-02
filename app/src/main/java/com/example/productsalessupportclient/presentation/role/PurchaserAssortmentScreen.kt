@@ -50,10 +50,12 @@ import com.example.productsalessupportclient.data.network.ClientManagerDashboard
 import com.example.productsalessupportclient.data.repository.AuthSession
 import com.example.productsalessupportclient.data.repository.PurchaserDashboardRepository
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -90,6 +92,10 @@ fun PurchaserAssortmentScreen(
     }
 
     val navController = rememberNavController()
+    val currentRoute =
+        navController.currentBackStackEntryAsState().value?.destination?.route
+
+    val isListScreen = currentRoute == "list"
     var pendingDeleteId by rememberSaveable { mutableStateOf<Long?>(null) }
 
     var showFilters by rememberSaveable { mutableStateOf(false) }
@@ -100,18 +106,25 @@ fun PurchaserAssortmentScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(12.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            androidx.compose.material3.OutlinedButton(
-                onClick = { showFilters = !showFilters }
+        if (isListScreen) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(if (showFilters) "Скрыть фильтры" else "Показать фильтры")
+                OutlinedButton(
+                    onClick = { showFilters = !showFilters }
+                ) {
+                    Text(
+                        if (showFilters)
+                            "Скрыть фильтры"
+                        else
+                            "Показать фильтры"
+                    )
+                }
             }
         }
 
-        if (showFilters) {
+        if (isListScreen && showFilters) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Card(
