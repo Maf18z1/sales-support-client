@@ -1,5 +1,7 @@
 package com.example.productsalessupportclient.presentation.role
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,6 +55,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PurchaserAssortmentScreen(
     session: AuthSession,
@@ -69,6 +72,7 @@ fun PurchaserAssortmentScreen(
         factory = PurchaserAssortmentViewModelFactory(repository, session.token)
     )
 
+    var searchQuery by rememberSaveable { mutableStateOf("") }
     var category by rememberSaveable { mutableStateOf("") }
     var minStock by rememberSaveable { mutableStateOf("") }
     var maxStock by rememberSaveable { mutableStateOf("") }
@@ -121,6 +125,16 @@ fun PurchaserAssortmentScreen(
                     Text("Фильтры", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(10.dp))
 
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        label = { Text("Поиск по названию ассортимента") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
                             value = category,
@@ -132,7 +146,7 @@ fun PurchaserAssortmentScreen(
                         OutlinedTextField(
                             value = expiringDays,
                             onValueChange = { if (it.all(Char::isDigit)) expiringDays = it },
-                            label = { Text("Срок, дни") },
+                            label = { Text("Срок") },
                             singleLine = true,
                             modifier = Modifier.width(110.dp),
                             keyboardOptions = KeyboardOptions(
@@ -219,13 +233,18 @@ fun PurchaserAssortmentScreen(
             )
         }
 
+        val filteredItems = state.items.filter { item ->
+            searchQuery.isBlank() ||
+                    item.name.contains(searchQuery, ignoreCase = true)
+        }
+
         NavHost(navController = navController, startDestination = "list") {
             composable("list") {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(state.items) { item ->
+                    items(filteredItems) { item ->
                         AssortmentRowCard(
                             item = item,
                             onEditClick = { navController.navigate("edit/${item.id}") },
