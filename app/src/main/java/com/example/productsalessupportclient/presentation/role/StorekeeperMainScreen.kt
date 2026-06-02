@@ -301,10 +301,14 @@ private fun SupplierOrderRowCard(
                     positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
                     tooltip = {
                         PlainTooltip {
-                            Text(item.itemsList ?: "Позиции не указаны")
+                            Text(
+                                "Номер: ${item.orderNumber}\n" +
+                                        (item.itemsList ?: "Позиции не указаны")
+                            )
                         }
                     },
-                    state = rememberTooltipState()
+                    state = rememberTooltipState(),
+                    enableUserInput = true
                 ) {
                     Text(
                         text = item.orderNumber,
@@ -312,9 +316,9 @@ private fun SupplierOrderRowCard(
                             fontSize = 8.sp,
                             lineHeight = 1.em
                         ),
-                        maxLines = Int.MAX_VALUE,
-                        softWrap = true,
-                        overflow = TextOverflow.Clip
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -325,17 +329,28 @@ private fun SupplierOrderRowCard(
                     .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = item.orderDate,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Дата заказа: ${item.orderDate}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderDate,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(
@@ -343,17 +358,28 @@ private fun SupplierOrderRowCard(
                     .weight(UPDATED_COL_WEIGHT)
                     .padding(start = 6.dp)
             ) {
-                Text(
-                    text = item.status,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Start,
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Статус: ${item.status}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.status,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Start,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -397,10 +423,15 @@ private fun BatchRowCard(
                     positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
                     tooltip = {
                         PlainTooltip {
-                            Text("ID: ${item.id}\nПолучено: ${item.receivedDate}")
+                            Text(
+                                "Товар: ${item.assortmentName}\n" +
+                                        "ID: ${item.id}\n" +
+                                        "Получено: ${item.receivedDate}"
+                            )
                         }
                     },
-                    state = rememberTooltipState()
+                    state = rememberTooltipState(),
+                    enableUserInput = true
                 ) {
                     Text(
                         text = item.assortmentName,
@@ -408,9 +439,9 @@ private fun BatchRowCard(
                             fontSize = 8.sp,
                             lineHeight = 1.em
                         ),
-                        maxLines = Int.MAX_VALUE,
-                        softWrap = true,
-                        overflow = TextOverflow.Clip
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -421,17 +452,28 @@ private fun BatchRowCard(
                     .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = item.quantity.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Количество: ${item.quantity}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.quantity.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(
@@ -439,16 +481,27 @@ private fun BatchRowCard(
                     .weight(UPDATED_COL_WEIGHT)
                     .padding(start = 6.dp)
             ) {
-                Text(
-                    text = expiryDate,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Срок годности: $expiryDate")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = expiryDate,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -489,10 +542,15 @@ private fun ReadyOrderRowCard(
                     positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
                     tooltip = {
                         PlainTooltip {
-                            Text("Статус: ${item.status}\nИсточник: ${item.source ?: "—"}")
+                            Text(
+                                "Номер: ${item.orderNumber}\n" +
+                                        "Статус: ${item.status}\n" +
+                                        "Источник: ${item.source ?: "—"}"
+                            )
                         }
                     },
-                    state = rememberTooltipState()
+                    state = rememberTooltipState(),
+                    enableUserInput = true
                 ) {
                     Text(
                         text = item.orderNumber,
@@ -500,9 +558,9 @@ private fun ReadyOrderRowCard(
                             fontSize = 8.sp,
                             lineHeight = 1.em
                         ),
-                        maxLines = Int.MAX_VALUE,
-                        softWrap = true,
-                        overflow = TextOverflow.Clip
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -513,17 +571,28 @@ private fun ReadyOrderRowCard(
                     .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = item.orderDate,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Дата заказа: ${item.orderDate}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderDate,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(
@@ -532,17 +601,28 @@ private fun ReadyOrderRowCard(
                     .padding(start = 6.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                Text(
-                    text = item.totalAmount.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 7.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.End,
-                    maxLines = Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = TextOverflow.Clip
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Сумма: ${item.totalAmount}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.totalAmount.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 7.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.End,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }

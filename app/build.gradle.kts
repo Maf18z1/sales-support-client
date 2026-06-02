@@ -27,17 +27,27 @@ android {
     android.buildFeatures.buildConfig = true
 
     defaultConfig {
-        applicationId = "com.example.productsalesupportclient"
+                applicationId = "com.example.productsalesupportclient"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080\"")
+        buildConfigField("String", "API_BASE_URL", "\"http://192.168.0.14:8080\"")
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
         compose = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
     }
 }
 
@@ -46,6 +56,9 @@ dependencies {
     implementation(libs.androidx.ui.text)
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.runtime.saveable)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.camera.camera2.pipe)
+    implementation(libs.androidx.material3)
     val composeBom = platform("androidx.compose:compose-bom:2026.05.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -78,4 +91,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation(kotlin("test"))
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.8")
+    androidTestImplementation("io.mockk:mockk-android:1.13.12")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+    androidTestImplementation("androidx.test:core-ktx:1.6.1")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 }

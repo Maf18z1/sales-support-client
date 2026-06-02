@@ -21,6 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
@@ -76,9 +81,17 @@ fun RegisterScreen(
                 else
                     androidx.compose.ui.text.input.PasswordVisualTransformation(),
             trailingIcon = {
-                val icon = if (passwordVisible.value) "видно" else "не видно"
-                TextButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                    Text(icon)
+                IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+                    Icon(
+                        imageVector = if (passwordVisible.value)
+                            Icons.Filled.Visibility
+                        else
+                            Icons.Filled.VisibilityOff,
+                        contentDescription = if (passwordVisible.value)
+                            "Скрыть пароль"
+                        else
+                            "Показать пароль"
+                    )
                 }
             }
         )

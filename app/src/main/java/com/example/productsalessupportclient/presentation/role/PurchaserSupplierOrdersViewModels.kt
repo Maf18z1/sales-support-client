@@ -167,20 +167,20 @@ class PurchaserSupplierOrderInfoViewModel(
     var uiState by mutableStateOf(PurchaserSupplierOrderInfoUiState())
         private set
 
-    fun load(id: Long) {
-        viewModelScope.launch {
-            uiState = uiState.copy(isLoading = true, error = null)
-            try {
-                val order = repository.loadOrder(token, id)
-                uiState = uiState.copy(isLoading = false, order = order)
-            } catch (e: Exception) {
-                uiState = uiState.copy(
-                    isLoading = false,
-                    error = e.message ?: "Failed to load supplier order"
-                )
+        fun load(id: Long) {
+            viewModelScope.launch {
+                uiState = uiState.copy(isLoading = true, error = null)
+                try {
+                    val order = repository.loadOrder(token, id)
+                    uiState = uiState.copy(isLoading = false, order = order)
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        error = e.message ?: "Failed to load supplier order"
+                    )
+                }
             }
         }
-    }
 }
 
 class PurchaserSupplierOrderInfoViewModelFactory(

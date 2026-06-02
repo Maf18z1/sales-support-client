@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -81,6 +82,12 @@ private enum class SupplierOrderStatusFilter(
     IN_TRANSIT("in_transit", "В пути"),
     RECEIVED("received", "Получен")
 }
+
+private const val ORDER_NUMBER_WEIGHT = 1.8f
+private const val SUPPLIER_WEIGHT = 3.2f
+private const val STATUS_WEIGHT = 1.5f
+private const val DATE_WEIGHT = 1.8f
+private const val ACTIONS_WEIGHT = 1.4f
 
 data class StorekeeperSupplierOrdersUiState(
     val isLoading: Boolean = false,
@@ -304,28 +311,84 @@ fun StorekeeperSupplierOrdersScreen(
 
         NavHost(navController = navController, startDestination = "list") {
             composable("list") {
-                DashboardSection(
-                    modifier = Modifier.fillMaxSize(),
-                    title = "Ожидаемые поступления от поставщиков",
-                    titleFontSize = 10.sp,
-                    headers = listOf("Номер", "Поставщик", "Статус", "Дата"),
-                    headerFontSize = 11.sp,
-                    items = state.orders,
-                    emptyText = "Нет поступлений"
-                ) { index, item ->
-                    SupplierOrderRowCard(
-                        index = index,
-                        item = item,
-                        onInfoClick = { navController.navigate("detail/${item.id}") },
-                        onReceiveClick = {
-                            vm.receiveOrder(
-                                orderId = item.id,
-                                status = statusInput.value,
-                                dateFrom = dateFromInput.trim().takeIf { it.isNotBlank() },
-                                dateTo = dateToInput.trim().takeIf { it.isNotBlank() }
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = "Ожидаемые поступления от поставщиков",
+                        fontSize = 10.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = Color(0xFFE8E1FF),
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                    ) {
+
+                        Box(
+                            modifier = Modifier.weight(ORDER_NUMBER_WEIGHT),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text("Номер", fontSize = 11.sp)
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(SUPPLIER_WEIGHT),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text("Поставщик", fontSize = 11.sp)
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(STATUS_WEIGHT),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text("Статус", fontSize = 11.sp)
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(DATE_WEIGHT),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text("Дата", fontSize = 11.sp)
+                        }
+
+                        Box(
+                            modifier = Modifier.weight(ACTIONS_WEIGHT)
+                        ) {}
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        itemsIndexed(state.orders) { index, item ->
+                            SupplierOrderRowCard(
+                                index = index,
+                                item = item,
+                                onInfoClick = {
+                                    navController.navigate("detail/${item.id}")
+                                },
+                                onReceiveClick = {
+                                    vm.receiveOrder(
+                                        orderId = item.id,
+                                        status = statusInput.value,
+                                        dateFrom = dateFromInput.trim()
+                                            .takeIf { it.isNotBlank() },
+                                        dateTo = dateToInput.trim()
+                                            .takeIf { it.isNotBlank() }
+                                    )
+                                }
                             )
                         }
-                    )
+                    }
                 }
             }
 
@@ -411,17 +474,96 @@ private fun SupplierOrderRowCard(
                 .padding(horizontal = 8.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.weight(2.2f)) {
-                Text(item.orderNumber, maxLines = 1, overflow = TextOverflow.Ellipsis,fontSize = 11.sp)
+            Box(
+                modifier = Modifier.weight(ORDER_NUMBER_WEIGHT)
+            ) {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Номер заказа:\n${item.orderNumber}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderNumber,
+                        fontSize = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-            Box(modifier = Modifier.weight(2.2f)) {
-                Text(item.supplierName, maxLines = 1, overflow = TextOverflow.Ellipsis,fontSize = 11.sp)
+
+            Box(
+                modifier = Modifier.weight(SUPPLIER_WEIGHT)
+            ) {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Поставщик:\n${item.supplierName}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.supplierName,
+                        fontSize = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-            Box(modifier = Modifier.weight(1.2f)) {
-                Text(item.status, maxLines = 1, overflow = TextOverflow.Ellipsis,fontSize = 11.sp)
+
+            Box(
+                modifier = Modifier.weight(STATUS_WEIGHT)
+            ) {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Статус:\n${item.status}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.status,
+                        fontSize = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-            Box(modifier = Modifier.weight(1.2f)) {
-                Text(item.orderDate, maxLines = 1, overflow = TextOverflow.Ellipsis,fontSize = 11.sp)
+
+            Box(
+                modifier = Modifier.weight(DATE_WEIGHT)
+            ) {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Дата заказа:\n${item.orderDate}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderDate,
+                        fontSize = 11.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             IconButton(onClick = onInfoClick) {

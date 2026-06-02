@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.Hyphens
@@ -214,11 +217,11 @@ fun RoleShell(
                                 .width(48.dp)
                                 .height(32.dp)
                         ) {
-                            Text(
-                                text = "Выйти",
-                                maxLines = 1,
-                                fontSize = 10.sp,
-                                textAlign = TextAlign.Center
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                                contentDescription = "Выйти",
+                                tint = Color.White,
+                                modifier = Modifier.size(18.dp)
                             )
                         }
                     }
@@ -244,7 +247,10 @@ fun RoleShell(
                         .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { drawerOpen = !drawerOpen }) {
+                    IconButton(
+                        onClick = { drawerOpen = !drawerOpen },
+                        modifier = Modifier.testTag("menu_button")
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Menu,
                             contentDescription = "Меню"

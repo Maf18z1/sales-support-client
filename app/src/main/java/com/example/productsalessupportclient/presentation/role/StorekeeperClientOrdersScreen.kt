@@ -37,10 +37,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -587,16 +591,27 @@ private fun StorekeeperClientOrderRowCard(
                     .weight(STOREKEEPER_ORDER_TITLE_WEIGHT)
                     .padding(end = 6.dp)
             ) {
-                Text(
-                    text = item.orderNumber,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 8.sp,
-                        lineHeight = 1.em
-                    ),
-                    maxLines = 2,
-                    softWrap = true,
-                    overflow = TextOverflow.Ellipsis
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Номер заказа:\n${item.orderNumber}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderNumber,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 8.sp,
+                            lineHeight = 1.em
+                        ),
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(
@@ -605,16 +620,27 @@ private fun StorekeeperClientOrderRowCard(
                     .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = item.orderDate,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 11.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Дата заказа:\n${item.orderDate}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.orderDate,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 11.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(
@@ -623,16 +649,27 @@ private fun StorekeeperClientOrderRowCard(
                     .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = item.status,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 11.sp,
-                        lineHeight = 1.em
-                    ),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Статус:\n${item.status}")
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    enableUserInput = true
+                ) {
+                    Text(
+                        text = item.status,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 11.sp,
+                            lineHeight = 1.em
+                        ),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Row(

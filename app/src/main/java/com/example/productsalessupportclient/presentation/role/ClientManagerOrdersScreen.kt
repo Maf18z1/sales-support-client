@@ -472,7 +472,7 @@ private fun ManagerOrderCreatePage(
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F5FF))
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                Text("Клиент (заглушка)", style = MaterialTheme.typography.titleMedium)
+                Text("Клиент", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ClientDropdownField(
